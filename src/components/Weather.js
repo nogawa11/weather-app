@@ -1,11 +1,22 @@
 import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
 const Weather = () => {
   const [state, setState] = React.useState();
   const [city, setCity] = React.useState();
   const [weatherDetails, setWeatherDetails] = React.useState();
+  const time = new Date();
+  const hour = time.getHours();
+
+  const getColors = () => {
+    if (hour >= 7 && hour <= 17) {
+      return
+    } else if ((hour < 7 && hour > 4) || (hour > 17 && hour < 19)) {
+      return "sunset"
+    } else {
+      return "night"
+    }
+  }
 
   async function getCoordinates() {
     try {
@@ -40,16 +51,20 @@ const Weather = () => {
   }
 
   return (
-    <div className="card--weather">
-      <button className="btn--mode">
-        <span className="icon--mode"><FontAwesomeIcon icon = {faMoon} /></span>
-        " Dark Mode"
-      </button>
+    <div className={"card--weather " + getColors()}>
       <h1>Weather in</h1>
       <form>
         <input name="city" type="text" value={city ? city : ''} onChange={handleFilter} />
         <button onClick={handleClick}>Check</button>
       </form>
+      <div className="weather--details">
+        <img src={weatherDetails ? require("../icons/" + weatherDetails.current.weather[0].icon + ".png") : null} alt="weather"/>
+        <h1>{weatherDetails ? weatherDetails.current.temp + "˚": null}</h1>
+        <h3>{weatherDetails ? weatherDetails.current.weather[0].description : null}</h3>
+        <p>{weatherDetails ? new Date(weatherDetails.current.dt * 1000).toLocaleString() : null}</p>
+        <p>{weatherDetails ? "Humidity: " + weatherDetails.current.humidity + "%" : null}</p>
+        <p>{weatherDetails ? "Wind Speed: " + weatherDetails.current.wind_speed + " mph" : null}</p>
+      </div>
     </div>
   )
 }
