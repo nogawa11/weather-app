@@ -23,6 +23,15 @@ body {
   align-items: center;
   justify-content: center;
 }
+.card--weather.night {
+  background: rgb(56,136,255);
+  background: linear-gradient(180deg, rgb(9, 12, 23) 0%, rgb(7, 30, 85) 100%);
+}
+
+.card--weather.sunset {
+  background: rgb(56,136,255);
+  background: linear-gradient(180deg, rgb(137, 19, 221) 0%, rgb(210, 20, 99) 50%, rgb(241, 91, 49) 100%);
+}
 
 .weather--temp {
   font-size: 80px;

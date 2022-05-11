@@ -1,12 +1,18 @@
 import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import moment from 'moment';
 
 const Weather = () => {
   const [state, setState] = React.useState();
-  const [city, setCity] = React.useState();
+  const [city, setCity] = React.useState('tokyo');
   const [weatherDetails, setWeatherDetails] = React.useState();
-  const time = new Date();
-  const hour = time.getHours();
+  const [hour, setHour] = React.useState(new Date().getHours());
+  const [currentTime, setCurrentTime] = React.useState(new Date().getHours());
+  const [hourOne, setHourOne] = React.useState();
+  const [hourTwo, setHourTwo] = React.useState();
+  const [hourThree, setHourThree] = React.useState();
+  const [hourFour, setHourFour] = React.useState();
+  const [hourFive, setHourFive] = React.useState();
 
   const getColors = () => {
     if (hour >= 7 && hour <= 17) {
@@ -18,6 +24,19 @@ const Weather = () => {
     }
   }
 
+  const getHour = (offset) => {
+    const offsetInMin = offset / 60
+    const currTime = moment().utcOffset(offsetInMin)
+    const formattedTime = currTime.format("HH:mm")
+    setHour(currTime.format("H"))
+    setCurrentTime(formattedTime)
+    setHourOne(currTime.add(1, 'hours').format("H"))
+    setHourTwo(currTime.add(1, 'hours').format("H"))
+    setHourThree(currTime.add(1, 'hours').format("H"))
+    setHourFour(currTime.add(1, 'hours').format("H"))
+    setHourFive(currTime.add(1, 'hours').format("H"))
+  }
+
   async function getCoordinates() {
     try {
       const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${city}.json?access_token=${process.env.REACT_APP_MAPBOX}`)
@@ -27,6 +46,7 @@ const Weather = () => {
           const res = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${data.features[0].center[1]}&lon=${data.features[0].center[0]}&exclude=minutely&appid=${process.env.REACT_APP_WEATHER_API}&units=imperial`)
           const info = await res.json();
           setWeatherDetails(info)
+          getHour(info.timezone_offset)
           console.log(info)
         } catch (err) {
           setState("error")
@@ -39,6 +59,11 @@ const Weather = () => {
       console.log(err)
     }
   }
+
+  React.useEffect(() => {
+    getCoordinates()
+  }, [])
+
 
   const handleFilter = (event) => {
     event.preventDefault()
@@ -62,34 +87,34 @@ const Weather = () => {
         <h1 className="weather--temp">{weatherDetails ? Math.ceil(weatherDetails.current.temp) + "˚": null}</h1>
         <div className="weather--text">
           <h3>{weatherDetails ? weatherDetails.current.weather[0].description : null}</h3>
-          <p>{weatherDetails ? "Time: " + new Date(weatherDetails.current.dt * 1000).getHours() + ":00": null}</p>
+          <p>{weatherDetails ? "Local Time: " + currentTime : null}</p>
           <p>{weatherDetails ? "Humidity: " + weatherDetails.current.humidity + "%" : null}</p>
         </div>
       </div>
       <h4>Hourly Forecast</h4>
       <div className="weather--hourly">
         <div className="weather--hourly-details">
-          <p>{weatherDetails ? new Date(weatherDetails.hourly[1].dt * 1000).getHours() + ":00" : null}</p>
+          <p>{weatherDetails ? hourOne + ":00" : null}</p>
           <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[1].weather[0].icon + ".png") : null} alt="weather"/>
           <p>{weatherDetails ? weatherDetails.hourly[1].temp + "˚": null}</p>
         </div>
         <div className="weather--hourly-details">
-          <p>{weatherDetails ? new Date(weatherDetails.hourly[2].dt * 1000).getHours() + ":00" : null}</p>
+          <p>{weatherDetails ? hourTwo + ":00" : null}</p>
           <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[2].weather[0].icon + ".png") : null} alt="weather"/>
           <p>{weatherDetails ? weatherDetails.hourly[2].temp + "˚": null}</p>
         </div>
         <div className="weather--hourly-details">
-          <p>{weatherDetails ? new Date(weatherDetails.hourly[3].dt * 1000).getHours() + ":00" : null}</p>
+          <p>{weatherDetails ? hourThree + ":00" : null}</p>
           <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[3].weather[0].icon + ".png") : null} alt="weather"/>
           <p>{weatherDetails ? weatherDetails.hourly[3].temp + "˚": null}</p>
         </div>
         <div className="weather--hourly-details">
-          <p>{weatherDetails ? new Date(weatherDetails.hourly[4].dt * 1000).getHours() + ":00" : null}</p>
+          <p>{weatherDetails ? hourFour + ":00" : null}</p>
           <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[4].weather[0].icon + ".png") : null} alt="weather"/>
           <p>{weatherDetails ? weatherDetails.hourly[4].temp + "˚": null}</p>
         </div>
         <div className="weather--hourly-details">
-          <p>{weatherDetails ? new Date(weatherDetails.hourly[5].dt * 1000).getHours() + ":00" : null}</p>
+          <p>{weatherDetails ? hourFive + ":00" : null}</p>
           <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[5].weather[0].icon + ".png") : null} alt="weather"/>
           <p>{weatherDetails ? weatherDetails.hourly[5].temp + "˚": null}</p>
         </div>
