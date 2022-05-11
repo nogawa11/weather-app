@@ -65,6 +65,33 @@ const Weather = () => {
         <p>{weatherDetails ? "Humidity: " + weatherDetails.current.humidity + "%" : null}</p>
         <p>{weatherDetails ? "Wind Speed: " + weatherDetails.current.wind_speed + " mph" : null}</p>
       </div>
+      <div className="weather--hourly">
+        <div className="weather--hourly-one">
+          <p>{weatherDetails ? new Date(weatherDetails.hourly[1].dt * 1000).getHours() + ":00" : null}</p>
+          <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[1].weather[0].icon + ".png") : null} alt="weather"/>
+          <p>{weatherDetails ? weatherDetails.hourly[1].temp + "˚": null}</p>
+        </div>
+        <div className="weather--hourly-two">
+          <p>{weatherDetails ? new Date(weatherDetails.hourly[2].dt * 1000).getHours() + ":00" : null}</p>
+          <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[2].weather[0].icon + ".png") : null} alt="weather"/>
+          <p>{weatherDetails ? weatherDetails.hourly[2].temp + "˚": null}</p>
+        </div>
+        <div className="weather--hourly-three">
+          <p>{weatherDetails ? new Date(weatherDetails.hourly[3].dt * 1000).getHours() + ":00" : null}</p>
+          <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[3].weather[0].icon + ".png") : null} alt="weather"/>
+          <p>{weatherDetails ? weatherDetails.hourly[3].temp + "˚": null}</p>
+        </div>
+        <div className="weather--hourly-four">
+          <p>{weatherDetails ? new Date(weatherDetails.hourly[4].dt * 1000).getHours() + ":00" : null}</p>
+          <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[4].weather[0].icon + ".png") : null} alt="weather"/>
+          <p>{weatherDetails ? weatherDetails.hourly[4].temp + "˚": null}</p>
+        </div>
+        <div className="weather--hourly-five">
+          <p>{weatherDetails ? new Date(weatherDetails.hourly[5].dt * 1000).getHours() + ":00" : null}</p>
+          <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[5].weather[0].icon + ".png") : null} alt="weather"/>
+          <p>{weatherDetails ? weatherDetails.hourly[5].temp + "˚": null}</p>
+        </div>
+      </div>
     </div>
   )
 }
