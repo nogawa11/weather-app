@@ -5,6 +5,7 @@ import moment from 'moment';
 const Weather = () => {
   const [state, setState] = React.useState();
   const [city, setCity] = React.useState('tokyo');
+  const [units, setUnits] = React.useState('imperial');
   const [weatherDetails, setWeatherDetails] = React.useState();
   const [hour, setHour] = React.useState(new Date().getHours());
   const [currentTime, setCurrentTime] = React.useState(new Date().getHours());
@@ -43,7 +44,7 @@ const Weather = () => {
       const data = await response.json();
       async function getWeatherDetails(event) {
         try {
-          const res = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${data.features[0].center[1]}&lon=${data.features[0].center[0]}&exclude=minutely&appid=${process.env.REACT_APP_WEATHER_API}&units=imperial`)
+          const res = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${data.features[0].center[1]}&lon=${data.features[0].center[0]}&exclude=minutely&appid=${process.env.REACT_APP_WEATHER_API}&units=${units}`)
           const info = await res.json();
           setWeatherDetails(info)
           getHour(info.timezone_offset)
@@ -62,7 +63,7 @@ const Weather = () => {
 
   React.useEffect(() => {
     getCoordinates()
-  }, [])
+  }, [units])
 
 
   const handleFilter = (event) => {
@@ -75,51 +76,66 @@ const Weather = () => {
     getCoordinates();
   }
 
+  const changeUnits = (event) => {
+    if (event.target.innerText === "C˚") {
+      setUnits("metric")
+    } else if (event.target.innerText === "F˚") {
+      setUnits("imperial")
+    }
+  }
+
   return (
     <div className={"card--weather " + getColors()}>
-      <h2>Weather in</h2>
-      <form className="weather--form">
-        <input name="city" type="text" value={city ? city : ''} onChange={handleFilter} />
-        <button className="btn--submit" onClick={handleClick}>Check</button>
-      </form>
-      <div className="weather--details">
-        <img src={weatherDetails ? require("../icons/" + weatherDetails.current.weather[0].icon + ".png") : null} alt="weather"/>
-        <h1 className="weather--temp">{weatherDetails ? Math.ceil(weatherDetails.current.temp) + "˚": null}</h1>
-        <div className="weather--text">
-          <h3>{weatherDetails ? weatherDetails.current.weather[0].description : null}</h3>
-          <p>{weatherDetails ? "Local Time: " + currentTime : null}</p>
-          <p>{weatherDetails ? "Humidity: " + weatherDetails.current.humidity + "%" : null}</p>
-        </div>
+      <div className="weather--units">
+        <button className={units === "metric" ? "selected" : null} onClick={changeUnits}>C˚</button>
+        /
+        <button className={units === "imperial" ? "selected" : null} onClick={changeUnits}>F˚</button>
       </div>
-      <h4>Hourly Forecast</h4>
-      <div className="weather--hourly">
-        <div className="weather--hourly-details">
-          <p>{weatherDetails ? hourOne + ":00" : null}</p>
-          <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[1].weather[0].icon + ".png") : null} alt="weather"/>
-          <p>{weatherDetails ? weatherDetails.hourly[1].temp + "˚": null}</p>
+      <div className="weather--info">
+        <h2>Weather in</h2>
+        <form className="weather--form">
+          <input name="city" type="text" value={city ? city : ''} onChange={handleFilter} />
+          <button className="btn--submit" onClick={handleClick}>Check</button>
+        </form>
+        <div className="weather--details">
+          <img src={weatherDetails ? require("../icons/" + weatherDetails.current.weather[0].icon + ".png") : null} alt="weather"/>
+          <h1 className="weather--temp">{weatherDetails ? Math.ceil(weatherDetails.current.temp) + "˚": null}</h1>
+          <div className="weather--text">
+            <h3>{weatherDetails ? weatherDetails.current.weather[0].description : null}</h3>
+            <p>{weatherDetails ? "Local Time: " + currentTime : null}</p>
+            <p>{weatherDetails ? "Humidity: " + weatherDetails.current.humidity + "%" : null}</p>
+          </div>
         </div>
-        <div className="weather--hourly-details">
-          <p>{weatherDetails ? hourTwo + ":00" : null}</p>
-          <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[2].weather[0].icon + ".png") : null} alt="weather"/>
-          <p>{weatherDetails ? weatherDetails.hourly[2].temp + "˚": null}</p>
+        <h4>Hourly Forecast</h4>
+        <div className="weather--hourly">
+          <div className="weather--hourly-details">
+            <p>{weatherDetails ? hourOne + ":00" : null}</p>
+            <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[1].weather[0].icon + ".png") : null} alt="weather"/>
+            <p>{weatherDetails ? weatherDetails.hourly[1].temp + "˚": null}</p>
+          </div>
+          <div className="weather--hourly-details">
+            <p>{weatherDetails ? hourTwo + ":00" : null}</p>
+            <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[2].weather[0].icon + ".png") : null} alt="weather"/>
+            <p>{weatherDetails ? weatherDetails.hourly[2].temp + "˚": null}</p>
+          </div>
+          <div className="weather--hourly-details">
+            <p>{weatherDetails ? hourThree + ":00" : null}</p>
+            <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[3].weather[0].icon + ".png") : null} alt="weather"/>
+            <p>{weatherDetails ? weatherDetails.hourly[3].temp + "˚": null}</p>
+          </div>
+          <div className="weather--hourly-details">
+            <p>{weatherDetails ? hourFour + ":00" : null}</p>
+            <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[4].weather[0].icon + ".png") : null} alt="weather"/>
+            <p>{weatherDetails ? weatherDetails.hourly[4].temp + "˚": null}</p>
+          </div>
+          <div className="weather--hourly-details">
+            <p>{weatherDetails ? hourFive + ":00" : null}</p>
+            <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[5].weather[0].icon + ".png") : null} alt="weather"/>
+            <p>{weatherDetails ? weatherDetails.hourly[5].temp + "˚": null}</p>
+          </div>
         </div>
-        <div className="weather--hourly-details">
-          <p>{weatherDetails ? hourThree + ":00" : null}</p>
-          <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[3].weather[0].icon + ".png") : null} alt="weather"/>
-          <p>{weatherDetails ? weatherDetails.hourly[3].temp + "˚": null}</p>
-        </div>
-        <div className="weather--hourly-details">
-          <p>{weatherDetails ? hourFour + ":00" : null}</p>
-          <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[4].weather[0].icon + ".png") : null} alt="weather"/>
-          <p>{weatherDetails ? weatherDetails.hourly[4].temp + "˚": null}</p>
-        </div>
-        <div className="weather--hourly-details">
-          <p>{weatherDetails ? hourFive + ":00" : null}</p>
-          <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[5].weather[0].icon + ".png") : null} alt="weather"/>
-          <p>{weatherDetails ? weatherDetails.hourly[5].temp + "˚": null}</p>
-        </div>
+        <button className="btn---five-day"> See 5-day Forecast</button>
       </div>
-      <button className="btn---five-day"> See 5-day Forecast</button>
     </div>
   )
 }
