@@ -4,7 +4,7 @@ const ForecastButton = ({handleForecast, hourlyForecast}) => {
       className="btn---five-day"
       onClick={handleForecast}
     >
-      {hourlyForecast ? "See 5-day Forecast" : "See Hourly Forecast"}
+      {hourlyForecast ? "See Daily Forecast" : "See Hourly Forecast"}
     </button>
   )
 }

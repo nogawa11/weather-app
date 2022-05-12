@@ -10,6 +10,7 @@ const HourlyForecast = ({weatherDetails, hourOne, hourTwo, hourThree, hourFour, 
           alt="weather"
         />
         <p>{weatherDetails ? weatherDetails.hourly[hour[1]].temp + "˚": null}</p>
+        <p className="weather--forecast-details-description">{weatherDetails ? weatherDetails.hourly[hour[1]].weather[0].description : null}</p>
       </div>
     )
   })

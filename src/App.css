@@ -143,6 +143,14 @@ input {
   filter: brightness(0) invert(1);
 }
 
+.weather--forecast-details-description {
+  font-size: 10px;
+  text-align: center;
+  width: 60px;
+  word-wrap: wrap;
+  line-height: 1;
+}
+
 .btn---five-day {
   background: transparent;
   color: white;
