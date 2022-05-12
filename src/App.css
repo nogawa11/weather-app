@@ -10,32 +10,53 @@ body {
   font-family: 'Nunito', sans-serif;
 }
 
+h2 {
+  margin: 0 0 12px 0;
+}
+
+h1, h3, p {
+  margin: 0;
+}
+
+h4 {
+  margin: 12px 0 12px 0;
+  font-size: 18px;
+}
+
 .card--weather {
   background: rgb(56,136,255);
   background: linear-gradient(180deg, rgb(57, 99, 251) 0%, rgb(24, 197, 255) 100%);
+  color: white;
   height: 600px;
   width: 600px;
-  border-radius: 16px;
-  margin-top: 20%;
-  color: white;
   position: relative;
   display:flex;
   justify-content: center;
+  margin-top: 20%;
+  border-radius: 16px;
+}
+.card--weather.night {
+  background: rgb(56,136,255);
+  background: linear-gradient(180deg, rgb(9, 12, 23) 0%, rgb(7, 30, 85) 100%);
+}
+.card--weather.sunset {
+  background: rgb(56,136,255);
+  background: linear-gradient(180deg, rgb(137, 19, 221) 0%, rgb(210, 20, 99) 50%, rgb(241, 91, 49) 100%);
 }
 
 .weather--units {
   position: absolute;
-  right: 20px;
   top: 20px;
+  right: 20px;
 }
 
 .weather--units button {
   background: transparent;
-  border: none;
-  font-family: inherit;
   color: white;
-  opacity: 0.7;
+  font-family: inherit;
   font-size: 18px;
+  border: none;
+  opacity: 0.7;
   cursor: pointer;
 }
 
@@ -51,20 +72,6 @@ body {
   justify-content: center;
 }
 
-.card--weather.night {
-  background: rgb(56,136,255);
-  background: linear-gradient(180deg, rgb(9, 12, 23) 0%, rgb(7, 30, 85) 100%);
-}
-
-.card--weather.sunset {
-  background: rgb(56,136,255);
-  background: linear-gradient(180deg, rgb(137, 19, 221) 0%, rgb(210, 20, 99) 50%, rgb(241, 91, 49) 100%);
-}
-
-.weather--temp {
-  font-size: 80px;
-}
-
 .weather--details {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -77,28 +84,18 @@ body {
   height: 100px;
 }
 
-h2 {
-  margin: 0 0 12px 0;
-}
-
-h1, h3, p {
-  margin: 0;
-}
-
-h4 {
-  margin: 12px 0 12px 0;
-  font-size: 18px;
+.weather--temp {
+  font-size: 80px;
 }
 
 input {
   background-color: rgba(0,0,0,0);
+  color: #ffffff;
+  width: 200px;
+  font-size: 34px;
+  text-align: center;
   border: none;
   border-bottom: 1px solid white;
-  color: #ffffff;
-  font-size: 34px;
-  width: 200px;
-  text-align: center;
-  justify-content: center;
   margin: 0 0 24px 0;
 }
 
@@ -120,17 +117,20 @@ input {
   gap: 18px;
 }
 
-.weather--forecast.daily .weather--forecast-hourly {
-  display: none;
-}
-
+.weather--forecast.daily .weather--forecast-hourly,
 .weather--forecast.hourly .weather--forecast-daily {
   display: none;
 }
 
-.weather-forecast-details-range {
-  font-size: 10px;
+.weather--forecast-details {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.weather-forecast-details-range {
+  display: flex;
+  font-size: 10px;
   gap: 4px;
 }
 
@@ -143,37 +143,28 @@ input {
   filter: brightness(0) invert(1);
 }
 
-.weather--forecast-details {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .btn---five-day {
-  border: 2px solid white;
   background: transparent;
+  color: white;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  border: 2px solid white;
   border-radius: 4px;
   padding: 8px 12px;
-  font-family: inherit;
-  color: white;
-  font-weight: 600;
   margin-top: 28px;
-  font-size: 18px;
   transition: 0.3s;
   cursor: pointer;
 }
-
-.card--weather.sunset .btn---five-day:hover {
-  color: rgba(197, 57, 32, 0.784);
-  background-color: rgb(255, 255, 255);
-}
-
-.card--weather.night .btn---five-day:hover {
-  color: rgba(6, 5, 80, 0.784);
-  background-color: rgb(255, 255, 255);
-}
-
 .btn---five-day:hover {
-  color: rgba(30, 146, 224, 0.784);
   background-color: rgb(255, 255, 255);
+  color: rgba(30, 146, 224, 0.784);
+}
+.card--weather.sunset .btn---five-day:hover {
+  background-color: rgb(255, 255, 255);
+  color: rgba(197, 57, 32, 0.784);
+}
+.card--weather.night .btn---five-day:hover {
+  background-color: rgb(255, 255, 255);
+  color: rgba(6, 5, 80, 0.784);
 }
