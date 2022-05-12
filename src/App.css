@@ -8,7 +8,6 @@ body {
   display: flex;
   justify-content: center;
   font-family: 'Nunito', sans-serif;
-
 }
 
 .card--weather {
@@ -112,17 +111,31 @@ input {
   filter: brightness(0) invert(1);
 }
 
-.weather--hourly {
+.weather--forecast-hourly, .weather--forecast-daily {
   display: flex;
   gap: 18px;
 }
 
-.weather--hourly img {
+.weather--forecast.daily .weather--forecast-hourly {
+  display: none;
+}
+
+.weather-forecast-details-range {
+  font-size: 10px;
+  display: flex;
+  gap: 4px;
+}
+
+.weather-forecast-details-day {
+  font-weight: 700;
+}
+
+.weather--forecast-details img {
   height: 50px;
   filter: brightness(0) invert(1);
 }
 
-.weather--hourly-details {
+.weather--forecast-details {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -143,6 +156,6 @@ input {
 }
 
 .btn---five-day:hover {
-  color: rgba(130, 133, 143, 0.784);
+  color: rgba(92, 32, 197, 0.784);
   background-color: rgb(255, 255, 255);
 }
