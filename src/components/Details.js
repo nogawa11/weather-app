@@ -12,7 +12,7 @@ const Details = ({weatherDetails, date}) => {
         <h3>
           {weatherDetails ? weatherDetails.current.weather[0].description : null}
         </h3>
-        <p>{weatherDetails ? date[0] + " (" + date[1] + ")" : null}</p>
+        <p>{weatherDetails ? date[1] + " " + date[2] : null}</p>
         <p>{weatherDetails ? "Humidity: " + weatherDetails.current.humidity + "%" : null}</p>
       </div>
     </div>

@@ -39,7 +39,7 @@ const Weather = () => {
   const getHour = (offset) => {
     const offsetInMin = offset / 60
     const currTime = moment().utcOffset(offsetInMin)
-    setDate([currTime.format("MM/DD"), currTime.format("dddd")])
+    setDate([currTime.format("MM/DD"), currTime.format("dddd"), currTime.format("HH:mm")])
     setHour(currTime.format("H"))
     setHourOne([currTime.add(1, 'hours').format("H"), 1])
     setHourTwo([currTime.add(1, 'hours').format("H"), 2])
