@@ -21,7 +21,6 @@ body {
   position: relative;
   display:flex;
   justify-content: center;
-  transition: all ease 0.5s;
 }
 
 .weather--units {
@@ -111,7 +110,12 @@ input {
   filter: brightness(0) invert(1);
 }
 
-.weather--forecast-hourly, .weather--forecast-daily {
+.weather--forecast-hourly{
+  display: flex;
+  gap: 24px;
+}
+
+.weather--forecast-daily {
   display: flex;
   gap: 18px;
 }

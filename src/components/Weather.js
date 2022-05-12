@@ -1,15 +1,19 @@
 import React from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from 'moment';
+import UnitButton from './UnitButton'
+import Form from './Form'
+import Details from './Details'
+import HourlyForecast from './HourlyForecast'
+import DailyForecast from './DailyForecast'
+import ForecastButton from './ForecastButton'
 
 const Weather = () => {
   const [state, setState] = React.useState();
   const [city, setCity] = React.useState('tokyo');
   const [units, setUnits] = React.useState('imperial');
-  const [hourlyForecast, setHourlyForecast] = React.useState(true);
+  const [hourlyForecast, setHourlyForecast] = React.useState(false);
   const [weatherDetails, setWeatherDetails] = React.useState();
   const [hour, setHour] = React.useState(new Date().getHours());
-  const [currentTime, setCurrentTime] = React.useState();
   const [hourOne, setHourOne] = React.useState();
   const [hourTwo, setHourTwo] = React.useState();
   const [hourThree, setHourThree] = React.useState();
@@ -22,8 +26,7 @@ const Weather = () => {
   const [dateFour, setDateFour] = React.useState();
   const [dateFive, setDateFive] = React.useState();
 
-
-  const getColors = () => {
+  const getColorScheme = () => {
     if (hour >= 7 && hour <= 17) {
       return
     } else if ((hour < 7 && hour > 4) || (hour > 17 && hour < 19)) {
@@ -36,20 +39,18 @@ const Weather = () => {
   const getHour = (offset) => {
     const offsetInMin = offset / 60
     const currTime = moment().utcOffset(offsetInMin)
-    const formattedTime = currTime.format("HH:mm")
     setDate([currTime.format("MM/DD"), currTime.format("dddd")])
-    setCurrentTime(formattedTime)
     setHour(currTime.format("H"))
-    setHourOne(currTime.add(1, 'hours').format("H"))
-    setHourTwo(currTime.add(1, 'hours').format("H"))
-    setHourThree(currTime.add(1, 'hours').format("H"))
-    setHourFour(currTime.add(1, 'hours').format("H"))
-    setHourFive(currTime.add(1, 'hours').format("H"))
-    setDateOne([currTime.add(1, 'days').format("MM/DD"), currTime.format("dddd")])
-    setDateTwo([currTime.add(1, 'days').format("MM/DD"), currTime.format("dddd")])
-    setDateThree([currTime.add(1, 'days').format("MM/DD"), currTime.format("dddd")])
-    setDateFour([currTime.add(1, 'days').format("MM/DD"), currTime.format("dddd")])
-    setDateFive([currTime.add(1, 'days').format("MM/DD"), currTime.format("dddd")])
+    setHourOne([currTime.add(1, 'hours').format("H"), 1])
+    setHourTwo([currTime.add(1, 'hours').format("H"), 2])
+    setHourThree([currTime.add(1, 'hours').format("H"), 3])
+    setHourFour([currTime.add(1, 'hours').format("H"), 4])
+    setHourFive([currTime.add(1, 'hours').format("H"), 5])
+    setDateOne([currTime.add(1, 'days').format("MM/DD"), currTime.format("dddd"), 1])
+    setDateTwo([currTime.add(1, 'days').format("MM/DD"), currTime.format("dddd"), 2])
+    setDateThree([currTime.add(1, 'days').format("MM/DD"), currTime.format("dddd"), 3])
+    setDateFour([currTime.add(1, 'days').format("MM/DD"), currTime.format("dddd"), 4])
+    setDateFive([currTime.add(1, 'days').format("MM/DD"), currTime.format("dddd"), 5])
   }
 
   async function getCoordinates() {
@@ -90,7 +91,8 @@ const Weather = () => {
     getCoordinates();
   }
 
-  const changeUnits = (event) => {
+  const handleUnits = (event) => {
+    event.preventDefault();
     if (event.target.innerText === "C˚") {
       setUnits("metric")
     } else if (event.target.innerText === "F˚") {
@@ -104,115 +106,45 @@ const Weather = () => {
   }
 
   return (
-    <div className={"card--weather " + getColors()}>
-      <div className="weather--units">
-        <button className={units === "metric" ? "selected" : null} onClick={changeUnits}>C˚</button>
-        /
-        <button className={units === "imperial" ? "selected" : null} onClick={changeUnits}>F˚</button>
-      </div>
+    <div className={"card--weather " + getColorScheme()}>
+      <UnitButton
+        handleUnits={handleUnits}
+        units={units}
+      />
       <div className="weather--info">
         <h2>Weather in</h2>
-        <form className="weather--form">
-          <input name="city" type="text" value={city ? city : ''} onChange={handleFilter} />
-          <button className="btn--submit" onClick={handleClick}>Check</button>
-        </form>
-        <div className="weather--details">
-          <img src={weatherDetails ? require("../icons/" + weatherDetails.current.weather[0].icon + ".png") : null} alt="weather"/>
-          <h1 className="weather--temp">{weatherDetails ? Math.ceil(weatherDetails.current.temp) + "˚": null}</h1>
-          <div className="weather--text">
-            <h3>{weatherDetails ? weatherDetails.current.weather[0].description : null}</h3>
-            <p>{weatherDetails ? date[0] + " (" + date[1] + ")" : null}</p>
-            <p>{weatherDetails ? "Humidity: " + weatherDetails.current.humidity + "%" : null}</p>
-          </div>
-        </div>
+        <Form
+          handleClick={handleClick}
+          handleFilter={handleFilter}
+          city={city}
+        />
+        <Details
+          weatherDetails={weatherDetails}
+          date={date}
+        />
         <h4>{hourlyForecast ? "Hourly Forecast" : "Daily Forecast"}</h4>
         <div className={hourlyForecast ? "weather--forecast hourly" : "weather--forecast daily"}>
-          <div className="weather--forecast-hourly">
-            <div className="weather--forecast-details">
-              <p>{weatherDetails ? hourOne + ":00" : null}</p>
-              <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[1].weather[0].icon + ".png") : null} alt="weather"/>
-              <p>{weatherDetails ? weatherDetails.hourly[1].temp + "˚": null}</p>
-            </div>
-            <div className="weather--forecast-details">
-              <p>{weatherDetails ? hourTwo + ":00" : null}</p>
-              <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[2].weather[0].icon + ".png") : null} alt="weather"/>
-              <p>{weatherDetails ? weatherDetails.hourly[2].temp + "˚": null}</p>
-            </div>
-            <div className="weather--forecast-details">
-              <p>{weatherDetails ? hourThree + ":00" : null}</p>
-              <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[3].weather[0].icon + ".png") : null} alt="weather"/>
-              <p>{weatherDetails ? weatherDetails.hourly[3].temp + "˚": null}</p>
-            </div>
-            <div className="weather--forecast-details">
-              <p>{weatherDetails ? hourFour + ":00" : null}</p>
-              <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[4].weather[0].icon + ".png") : null} alt="weather"/>
-              <p>{weatherDetails ? weatherDetails.hourly[4].temp + "˚": null}</p>
-            </div>
-            <div className="weather--forecast-details">
-              <p>{weatherDetails ? hourFive + ":00" : null}</p>
-              <img src={weatherDetails ? require("../icons/" + weatherDetails.hourly[5].weather[0].icon + ".png") : null} alt="weather"/>
-              <p>{weatherDetails ? weatherDetails.hourly[5].temp + "˚": null}</p>
-            </div>
-          </div>
-          <div className="weather--forecast-daily">
-            <div className="weather--forecast-details">
-              <p>{weatherDetails ? dateOne[0] : null}</p>
-              <p className="weather-forecast-details-day">{weatherDetails ? dateOne[1] : null}</p>
-              <img src={weatherDetails ? require("../icons/" + weatherDetails.daily[1].weather[0].icon + ".png") : null} alt="weather"/>
-              <p>{weatherDetails ? weatherDetails.daily[1].temp.day + "˚": null}</p>
-              <div className="weather-forecast-details-range">
-                <p>{weatherDetails ? "Hi: " + Math.ceil(weatherDetails.daily[1].temp.max) + "˚": null}</p>
-                /
-                <p> {weatherDetails ? "Lo: " + Math.ceil(weatherDetails.daily[1].temp.min) + "˚": null}</p>
-              </div>
-            </div>
-            <div className="weather--forecast-details">
-            <p>{weatherDetails ? dateTwo[0] : null}</p>
-              <p className="weather-forecast-details-day">{weatherDetails ? dateTwo[1] : null}</p>
-              <img src={weatherDetails ? require("../icons/" + weatherDetails.daily[2].weather[0].icon + ".png") : null} alt="weather"/>
-              <p>{weatherDetails ? weatherDetails.daily[2].temp.day + "˚": null}</p>
-              <div className="weather-forecast-details-range">
-                <p>{weatherDetails ? "Hi: " + Math.ceil(weatherDetails.daily[2].temp.max) + "˚": null}</p>
-                /
-                <p> {weatherDetails ? "Lo: " + Math.ceil(weatherDetails.daily[2].temp.min) + "˚": null}</p>
-              </div>
-            </div>
-            <div className="weather--forecast-details">
-            <p>{weatherDetails ? dateThree[0] : null}</p>
-              <p className="weather-forecast-details-day">{weatherDetails ? dateThree[1] : null}</p>
-              <img src={weatherDetails ? require("../icons/" + weatherDetails.daily[3].weather[0].icon + ".png") : null} alt="weather"/>
-              <p>{weatherDetails ? weatherDetails.daily[3].temp.day + "˚": null}</p>
-              <div className="weather-forecast-details-range">
-                <p>{weatherDetails ? "Hi: " + Math.ceil(weatherDetails.daily[3].temp.max) + "˚": null}</p>
-                /
-                <p> {weatherDetails ? "Lo: " + Math.ceil(weatherDetails.daily[3].temp.min) + "˚": null}</p>
-              </div>
-            </div>
-            <div className="weather--forecast-details">
-            <p>{weatherDetails ? dateFour[0] : null}</p>
-              <p className="weather-forecast-details-day">{weatherDetails ? dateFour[1] : null}</p>
-              <img src={weatherDetails ? require("../icons/" + weatherDetails.daily[4].weather[0].icon + ".png") : null} alt="weather"/>
-              <p>{weatherDetails ? weatherDetails.daily[4].temp.day + "˚": null}</p>
-              <div className="weather-forecast-details-range">
-                <p>{weatherDetails ? "Hi: " + Math.ceil(weatherDetails.daily[4].temp.max) + "˚": null}</p>
-                /
-                <p> {weatherDetails ? "Lo: " + Math.ceil(weatherDetails.daily[4].temp.min) + "˚": null}</p>
-              </div>
-            </div>
-            <div className="weather--forecast-details">
-              <p>{weatherDetails ? dateFive[0] : null}</p>
-              <p className="weather-forecast-details-day">{weatherDetails ? dateFive[1] : null}</p>
-              <img src={weatherDetails ? require("../icons/" + weatherDetails.daily[5].weather[0].icon + ".png") : null} alt="weather"/>
-              <p>{weatherDetails ? weatherDetails.daily[5].temp.day + "˚": null}</p>
-              <div className="weather-forecast-details-range">
-                <p>{weatherDetails ? "Hi: " + Math.ceil(weatherDetails.daily[5].temp.max) + "˚": null}</p>
-                /
-                <p> {weatherDetails ? "Lo: " + Math.ceil(weatherDetails.daily[5].temp.min) + "˚": null}</p>
-              </div>
-            </div>
-          </div>
+          <HourlyForecast
+            weatherDetails={weatherDetails}
+            hourOne={hourOne}
+            hourTwo={hourTwo}
+            hourThree={hourThree}
+            hourFour={hourFour}
+            hourFive={hourFive}
+          />
+          <DailyForecast
+            weatherDetails={weatherDetails}
+            dateOne={dateOne}
+            dateTwo={dateTwo}
+            dateThree={dateThree}
+            dateFour={dateFour}
+            dateFive={dateFive}
+          />
         </div>
-        <button className="btn---five-day" onClick={handleForecast}> {hourlyForecast ? "See 5-day Forecast" : "See Hourly Forecast"}</button>
+        <ForecastButton
+          handleForecast={handleForecast}
+          hourlyForecast={hourlyForecast}
+        />
       </div>
     </div>
   )
