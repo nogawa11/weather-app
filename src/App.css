@@ -120,6 +120,10 @@ input {
   display: none;
 }
 
+.weather--forecast.hourly .weather--forecast-daily {
+  display: none;
+}
+
 .weather-forecast-details-range {
   font-size: 10px;
   display: flex;
@@ -155,7 +159,17 @@ input {
   cursor: pointer;
 }
 
+.card--weather.sunset .btn---five-day:hover {
+  color: rgba(197, 57, 32, 0.784);
+  background-color: rgb(255, 255, 255);
+}
+
+.card--weather.night .btn---five-day:hover {
+  color: rgba(6, 5, 80, 0.784);
+  background-color: rgb(255, 255, 255);
+}
+
 .btn---five-day:hover {
-  color: rgba(92, 32, 197, 0.784);
+  color: rgba(30, 146, 224, 0.784);
   background-color: rgb(255, 255, 255);
 }
