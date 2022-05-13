@@ -19,7 +19,7 @@ h1, h3, p {
 }
 
 h4 {
-  margin: 16px 0 18px 0;
+  margin: 14px 0 14px 0;
   font-size: 18px;
 }
 
@@ -108,7 +108,7 @@ input {
   filter: brightness(0) invert(1);
 }
 
-.weather--forecast-hourly{
+.weather--forecast-hourly {
   display: flex;
   gap: 24px;
 }
@@ -176,4 +176,52 @@ input {
 .card--weather.night .btn---five-day:hover {
   background-color: rgb(255, 255, 255);
   color: rgba(6, 5, 80, 0.784);
+}
+
+
+@media only screen and (max-width: 600px) {
+  .card--weather {
+    height: 100vh;
+    overflow: scroll;
+    width: 100vw;
+    margin-top: 0;
+    padding: 100px 0 0 0;
+    border-radius: 0;
+    align-items: flex-start;
+  }
+  .weather--details {
+    display: flex;
+    gap: 12px;
+    text-align: left;
+    justify-content: space-evenly;
+    margin: 0 32px;
+
+  }
+  .weather--details img {
+    height: 75px;
+  }
+  .weather--temp {
+    font-size: 56px;
+  }
+  .weather--text h3 {
+    font-size: 14px;
+  }
+  .weather--text p {
+    font-size: 12px;
+  }
+  .weather--forecast-daily {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 24px;
+    justify-content: center;
+  }
+  .weather--forecast-hourly {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 40px;
+    justify-content: center;
+  }
+  .btn---five-day {
+    font-size: 16px;
+  }
 }
